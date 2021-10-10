@@ -1,3 +1,10 @@
-#! /bin/bash
+#!/bin/bash
 
-valgrind ./bin/./Dijkstra
+command=./bin/./Dijkstra
+
+if ! type "valgrind" > /dev/null; 
+then
+    $command
+else
+    valgrind $command
+fi
