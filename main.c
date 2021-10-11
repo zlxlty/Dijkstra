@@ -3,16 +3,29 @@
  * @Description: 
  * @Date: 2021-10-09 17:27:44
  * @LastEditors: Tianyi Lu
- * @LastEditTime: 2021-10-10 19:01:58
+ * @LastEditTime: 2021-10-10 19:08:35
  */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <limits.h>
-#include "main.h"
+#include "Heap/heap.h"
+#include "Graph/graph.h"
+
+extern Miniheap *heap_init();
+extern void heap_insert(Miniheap *pHeap, int index, int priority);
+extern int *heap_extract_min(Miniheap *pHeap);
+extern HeapNode *heap_get_node(Miniheap *pHeap, int index);
+extern void heap_change_priority(Miniheap *pHeap, int index, int newPriority);
+extern void heap_free(Miniheap *pHeap);
+extern void heap_print(Miniheap *pHeap);
+extern void heap_print_indexes(Miniheap *pHeap);
 
 extern Graph *graph_init(int numNodes, int initNum);
+extern void graph_add_edge(Graph *pGraph, int startVertexIndex,
+                    int endVertexIndex, int value);
+extern void graph_free(Graph *pGraph);
 
 int *dijkstra(Graph *pGraph, int start)
 {
