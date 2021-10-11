@@ -3,7 +3,7 @@
  * @Description:
  * @Date: 2021-10-09 19:52:19
  * @LastEditors: Tianyi Lu
- * @LastEditTime: 2021-10-09 23:54:06
+ * @LastEditTime: 2021-10-10 15:52:59
  */
 
 #include <stdio.h>
@@ -13,68 +13,68 @@
 
 Graph *graph_init(int numNodes, int initNum)
 {
-    Graph *pgraph = (Graph *)malloc(sizeof(Graph));
-    pgraph->initNum = initNum;
-    pgraph->numNodes = numNodes;
-    pgraph->edges = (int **)malloc(sizeof(int *) * pgraph->numNodes);
+    Graph *pGraph = (Graph *)malloc(sizeof(Graph));
+    pGraph->initNum = initNum;
+    pGraph->numNodes = numNodes;
+    pGraph->edges = (int **)malloc(sizeof(int *) * pGraph->numNodes);
 
-    for (int i = 0; i < pgraph->numNodes; i++)
+    for (int i = 0; i < pGraph->numNodes; i++)
     {
-        pgraph->edges[i] = (int *)malloc(sizeof(int) * pgraph->numNodes);
-        memset(pgraph->edges[i], initNum, pgraph->numNodes * sizeof(int));
+        pGraph->edges[i] = (int *)malloc(sizeof(int) * pGraph->numNodes);
+        memset(pGraph->edges[i], initNum, pGraph->numNodes * sizeof(int));
     }
 
-    return pgraph;
+    return pGraph;
 }
 
-void graph_add_edge(Graph *pgraph, int startVertexIndex,
+void graph_add_edge(Graph *pGraph, int startVertexIndex,
                     int endVertexIndex, int value)
 {
-    if (startVertexIndex < 0 || startVertexIndex >= pgraph->numNodes ||
-        endVertexIndex < 0 || endVertexIndex >= pgraph->numNodes)
+    if (startVertexIndex < 0 || startVertexIndex >= pGraph->numNodes ||
+        endVertexIndex < 0 || endVertexIndex >= pGraph->numNodes)
     {
         return;
     }
 
-    pgraph->edges[startVertexIndex][endVertexIndex] = value;
+    pGraph->edges[startVertexIndex][endVertexIndex] = value;
 }
 
-int graph_get_edge(Graph *pgraph, int startVertexIndex, int endVertexIndex)
+int graph_get_edge(Graph *pGraph, int startVertexIndex, int endVertexIndex)
 {
-    if (startVertexIndex < 0 || startVertexIndex >= pgraph->numNodes ||
-        endVertexIndex < 0 || endVertexIndex >= pgraph->numNodes)
+    if (startVertexIndex < 0 || startVertexIndex >= pGraph->numNodes ||
+        endVertexIndex < 0 || endVertexIndex >= pGraph->numNodes)
     {
         return 0;
     }
 
-    return pgraph->edges[startVertexIndex][endVertexIndex];
+    return pGraph->edges[startVertexIndex][endVertexIndex];
 }
 
-void graph_delete_edge(Graph *pgraph, int startVertexIndex, int endVertexIndex)
+void graph_delete_edge(Graph *pGraph, int startVertexIndex, int endVertexIndex)
 {
-    if (startVertexIndex < 0 || startVertexIndex >= pgraph->numNodes ||
-        endVertexIndex < 0 || endVertexIndex >= pgraph->numNodes)
+    if (startVertexIndex < 0 || startVertexIndex >= pGraph->numNodes ||
+        endVertexIndex < 0 || endVertexIndex >= pGraph->numNodes)
     {
         return;
     }
 
-    pgraph->edges[startVertexIndex][endVertexIndex] = pgraph->initNum;
+    pGraph->edges[startVertexIndex][endVertexIndex] = pGraph->initNum;
 }
 
-void graph_print(Graph *pgraph)
+void graph_print(Graph *pGraph)
 {
-    if (!pgraph)
+    if (!pGraph)
         return;
 
-    printf("num of vertices: %d\n", pgraph->numNodes);
-    printf("init number: %d\n", pgraph->initNum);
+    printf("num of vertices: %d\n", pGraph->numNodes);
+    printf("init number: %d\n", pGraph->initNum);
     printf("-----------------------------\n");
-    for (int i = 0; i < pgraph->numNodes; i++)
+    for (int i = 0; i < pGraph->numNodes; i++)
     {
         printf("Vertex %2d:\n", i);
-        for (int j = 0; j < pgraph->numNodes; j++)
+        for (int j = 0; j < pGraph->numNodes; j++)
         {
-            int value = pgraph->edges[i][j];
+            int value = pGraph->edges[i][j];
             if (value != 0)
                 printf("Edge %2d -> %2d: %d\n", i, j, value);
         }
@@ -82,14 +82,14 @@ void graph_print(Graph *pgraph)
     }
 }
 
-void graph_free(Graph *pgraph)
+void graph_free(Graph *pGraph)
 {
-    if (pgraph == NULL || pgraph->edges == NULL)
+    if (pGraph == NULL || pGraph->edges == NULL)
         return;
 
-    for (int i = 0; i < pgraph->numNodes; i++)
-        free(pgraph->edges[i]);
+    for (int i = 0; i < pGraph->numNodes; i++)
+        free(pGraph->edges[i]);
 
-    free(pgraph->edges);
-    free(pgraph);
+    free(pGraph->edges);
+    free(pGraph);
 }

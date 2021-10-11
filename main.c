@@ -3,63 +3,79 @@
  * @Description: 
  * @Date: 2021-10-09 17:27:44
  * @LastEditors: Tianyi Lu
- * @LastEditTime: 2021-10-09 23:59:01
+ * @LastEditTime: 2021-10-10 19:01:58
  */
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <limits.h>
 #include "main.h"
 
-void test_heap()
+extern Graph *graph_init(int numNodes, int initNum);
+
+int *dijkstra(Graph *pGraph, int start)
 {
-    printf("---- Start heap test ----\n");
+    if (!pGraph)
+    {
+        exit(1);
+    }
 
     Miniheap *pHeap = heap_init();
-    heap_insert(pHeap, 3, INT_MAX);
-    heap_insert(pHeap, 6, 100);
-    heap_insert(pHeap, 2, 20);
-    heap_insert(pHeap, 8, 3);
-    heap_insert(pHeap, 4, 1);
-    heap_print(pHeap);
-    heap_print_indexes(pHeap);
-    HeapNode *node6 = heap_get_node(pHeap, 3);
-    HeapNode *parentNode = node6->parent;
-    printf("index: %d\n", parentNode->index);
+    for (int i = 0; i < pGraph->numNodes; i++)
+    {
+        int priority = INT_MAX;
+        if (i == start)
+            priority = 0;
+
+        heap_insert(pHeap, i, priority);
+    }
+
+    int *shortest = (int *)malloc(sizeof(int) * pGraph->numNodes);
+    memset(shortest, -1, sizeof(int) * pGraph->numNodes);
+    while (pHeap->length > 0)
+    {
+        int *result = heap_extract_min(pHeap);
+        int vertex = result[0];
+        int distance = result[1];
+        shortest[vertex] = distance;
+
+        for (int i = 0; i < pGraph->numNodes; i++) {
+            int edgeWeight = pGraph->edges[vertex][i];
+            if (edgeWeight) {
+                HeapNode* neighbor = heap_get_node(pHeap, i);
+                if (neighbor) {
+                    int distanceTo = distance + edgeWeight;
+                    if (distanceTo < neighbor->priority)
+                        heap_change_priority(pHeap, i, distanceTo);
+                }
+            }
+        }
+
+        free(result);
+    }
 
     heap_free(pHeap);
-
-    printf("----- End heap test -----\n");
+    return shortest;
 }
-
-void test_graph()
-{
-    printf("---- Start graph test ----\n");
-
-    Graph *pgraph = graph_init(7, 0);
-    graph_add_edge(pgraph, 1, 2, 1);
-    graph_add_edge(pgraph, 1, 5, 1);
-    graph_add_edge(pgraph, 1, 6, 1);
-    graph_add_edge(pgraph, 1, 0, 1);
-    graph_add_edge(pgraph, 3, 0, 1);
-    graph_add_edge(pgraph, 3, 4, 1);
-    graph_add_edge(pgraph, 5, 7, 1);
-    graph_add_edge(pgraph, 5, 2, 1);
-    graph_add_edge(pgraph, 7, 2, 1);
-    graph_add_edge(pgraph, 3, -1, 1);
-    graph_add_edge(pgraph, 5, 6, 1);
-    graph_add_edge(pgraph, 2, 6, 1);
-    graph_print(pgraph);
-    graph_free(pgraph);
-
-    printf("----- End graph test -----\n");
-}
-
-
 
 int main(int argc, char const *argv[])
 {
-    test_heap();
-    test_graph();
+    Graph *pGraph = graph_init(6, 0);
+    graph_add_edge(pGraph, 0, 1, 7);
+    graph_add_edge(pGraph, 0, 2, 12);
+    graph_add_edge(pGraph, 1, 2, 2);
+    graph_add_edge(pGraph, 1, 3, 9);
+    graph_add_edge(pGraph, 2, 4, 10);
+    graph_add_edge(pGraph, 3, 5, 1);
+    graph_add_edge(pGraph, 4, 3, 4);
+    graph_add_edge(pGraph, 4, 5, 5);
+
+    int *shortestDistance = dijkstra(pGraph, 0);
+    for (int i = 0; i < pGraph->numNodes; i++)
+        printf("\nshortest distance to %d is : %d\n\n", i, shortestDistance[i]);
+
+    free(shortestDistance);
+    graph_free(pGraph);
     return 0;
 }
