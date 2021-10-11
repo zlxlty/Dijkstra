@@ -3,7 +3,7 @@
  * @Description: 
  * @Date: 2021-10-04 22:32:23
  * @LastEditors: Tianyi Lu
- * @LastEditTime: 2021-10-10 18:57:18
+ * @LastEditTime: 2021-10-10 19:12:07
  */
 
 #include <stdio.h>
@@ -69,9 +69,8 @@ int *heap_extract_min(Miniheap *pHeap)
     if (pHeap->length <= 0)
         return NULL;
 
-    HeapNode *lastNode = pHeap->nodes[pHeap->length - 1];
-
     HeapNode *minNode = pHeap->nodes[0];
+    HeapNode *lastNode = pHeap->nodes[pHeap->length - 1];
     _swapNode(minNode, lastNode);
 
     pHeap->indexes[minNode->index] = minNode;
