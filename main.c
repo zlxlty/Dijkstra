@@ -3,13 +3,14 @@
  * @Description: 
  * @Date: 2021-10-09 17:27:44
  * @LastEditors: Tianyi Lu
- * @LastEditTime: 2021-10-11 01:00:58
+ * @LastEditTime: 2021-10-15 14:36:22
  */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <limits.h>
+#include <sys/queue.h>
 #include "Heap/heap.h"
 #include "Graph/graph.h"
 
